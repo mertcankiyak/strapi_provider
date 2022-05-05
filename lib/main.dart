@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Provider & Strapi',
         theme: ThemeData(
           primarySwatch: Colors.blue,

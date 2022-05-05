@@ -60,7 +60,7 @@ class LoginView extends StatelessWidget with FormValidate {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                       ResponseUserModel? gelenVeri = await _loginViewModel.login(
+                       await _loginViewModel.login(
                           requestUserModel: RequestUserModel(
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim(),
