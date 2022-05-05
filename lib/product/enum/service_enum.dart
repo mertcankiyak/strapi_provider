@@ -1,0 +1,1 @@
+enum ServiceEnum { BASEURL, LOGINPATH }
