@@ -20,7 +20,7 @@ class LoginError extends StatelessWidget {
     final _loginViewModel = Provider.of<LoginViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
+        backgroundColor: Color(0xFFF56969),
         elevation: 0,
         title: Text("Error Page"),
       ),
@@ -28,9 +28,18 @@ class LoginError extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("You made an incomplete or incorrect entry. Please try logging in again.", style: Theme.of(context).textTheme.headline6, textAlign: TextAlign.center,),
-          ElevatedButton(onPressed: () {
-            _loginViewModel.loginStatus = LoginStatus.LoginInit;
-          }, child: Text("Try Login"))
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(  style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(
+                  Size(MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height * 0.07),
+                ),
+                backgroundColor:
+                MaterialStateProperty.all(Colors.redAccent)),onPressed: () {
+              _loginViewModel.loginStatus = LoginStatus.LoginInit;
+            }, child: Text("Try Login")),
+          )
         ],
       ),
     );

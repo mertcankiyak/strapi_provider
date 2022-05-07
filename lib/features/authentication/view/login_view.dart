@@ -18,22 +18,95 @@ class LoginView extends StatelessWidget with FormValidate {
     final _loginViewModel = Provider.of<LoginViewModel>(context);
     return Scaffold(
       backgroundColor: Color(0xFFEBE9F3),
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Color(0xFFEBE9F3),
-        elevation: 0,
-      ),
-      body: ListView(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text("Hello Again", style: Theme.of(context).textTheme.headline3, textAlign: TextAlign.center,),
-              Text("Wellcome back you've been missed", style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
-              
-            ],
-          ),
-        ],
+      resizeToAvoidBottomInset: true,
+      body: Center(
+        child: ListView(
+          shrinkWrap: true,
+          physics: ScrollPhysics(),
+          children: [
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Welcome", style: Theme.of(context).textTheme.headline3,),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),
+                      child: TextFormField(
+                        style: TextStyle(fontSize: 18),
+                        validator: emailValidation,
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(24),
+                            border: InputBorder.none,
+                            hintText: emailText),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),
+                      child: TextFormField(
+                        obscureText: true,
+                        style: TextStyle(fontSize: 18),
+                        validator: passwordControl,
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(24),
+                            border: InputBorder.none,
+                            hintText: passwordText),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.all(
+                              Size(MediaQuery.of(context).size.width,
+                                  MediaQuery.of(context).size.height * 0.08),
+                            ),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    side: BorderSide(color: Colors.red)
+                                )
+                            ),
+                            backgroundColor:
+                            MaterialStateProperty.all(Color(0xFFF56969))),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            await _loginViewModel.login(
+                              requestUserModel: RequestUserModel(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(logIn, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),)),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
