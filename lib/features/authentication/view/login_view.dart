@@ -30,78 +30,10 @@ class LoginView extends StatelessWidget with FormValidate {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Welcome", style: Theme.of(context).textTheme.headline3,),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
-                      child: TextFormField(
-                        style: TextStyle(fontSize: 18),
-                        validator: emailValidation,
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.all(24),
-                            border: InputBorder.none,
-                            hintText: emailText),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
-                      child: TextFormField(
-                        obscureText: true,
-                        style: TextStyle(fontSize: 18),
-                        validator: passwordControl,
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.all(24),
-                            border: InputBorder.none,
-                            hintText: passwordText),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.all(
-                              Size(MediaQuery.of(context).size.width,
-                                  MediaQuery.of(context).size.height * 0.08),
-                            ),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    side: BorderSide(color: Colors.red)
-                                )
-                            ),
-                            backgroundColor:
-                            MaterialStateProperty.all(Color(0xFFF56969))),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            await _loginViewModel.login(
-                              requestUserModel: RequestUserModel(
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text.trim(),
-                              ),
-                            );
-                          }
-                        },
-                        child: Text(logIn, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),)),
-                  ),
+                  buildWelcome(context),
+                  buildEmailText(),
+                  buildPasswordText(),
+                  buildLoginButton(context, _loginViewModel),
                 ],
               ),
             ),
@@ -110,87 +42,93 @@ class LoginView extends StatelessWidget with FormValidate {
       ),
     );
   }
+
+  Padding buildWelcome(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        "Welcome",
+        style: Theme.of(context).textTheme.headline3,
+      ),
+    );
+  }
+
+  Padding buildEmailText() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        child: TextFormField(
+          style: TextStyle(fontSize: 18),
+          validator: emailValidation,
+          controller: _emailController,
+          decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.all(24),
+              border: InputBorder.none,
+              hintText: emailText),
+        ),
+      ),
+    );
+  }
+
+  Padding buildPasswordText() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        child: TextFormField(
+          obscureText: true,
+          style: TextStyle(fontSize: 18),
+          validator: passwordControl,
+          controller: _passwordController,
+          decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.all(24),
+              border: InputBorder.none,
+              hintText: passwordText),
+        ),
+      ),
+    );
+  }
+
+  Padding buildLoginButton(
+      BuildContext context, LoginViewModel _loginViewModel) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+          style: ButtonStyle(
+              minimumSize: MaterialStateProperty.all(
+                Size(MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.height * 0.08),
+              ),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                      side: BorderSide(color: Colors.red))),
+              backgroundColor: MaterialStateProperty.all(Color(0xFFF56969))),
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+              _loginViewModel.login(
+                requestUserModel: RequestUserModel(
+                  email: _emailController.text.trim(),
+                  password: _passwordController.text.trim(),
+                ),
+              );
+            }
+          },
+          child: Text(
+            logIn,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),
+          )),
+    );
+  }
 }
-/* Center(
-            child: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                  width: 200.0,
-                  height: 200.0,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade200.withOpacity(0.5)),
-                  child: const Center(
-                    child: Text(
-                      'Frosted',
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),*/
-/*
-* SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                      child: Container(
-                        width: 200,
-                        height: MediaQuery.of(context).size.height,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade200.withOpacity(0.5)
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                        validator: emailValidation,
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          hintText: emailText,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                        validator: passwordControl,
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            hintText: passwordText),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all(
-                                Size(MediaQuery.of(context).size.width,
-                                    MediaQuery.of(context).size.height * 0.07),
-                              ),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.black45)),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                             await _loginViewModel.login(
-                                requestUserModel: RequestUserModel(
-                                  email: _emailController.text.trim(),
-                                  password: _passwordController.text.trim(),
-                                ),
-                              );
-                            }
-                          },
-                          child: Text(logIn)),
-                    ),
-                  ],
-                ),
-              ),
-            ),*/
